@@ -3,6 +3,7 @@ package sample;
 
 
 import javafx.application.Application;
+import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.scene.*;
 import javafx.scene.image.Image;
@@ -22,17 +23,17 @@ import sample.models.Gamer;
  */
 public class Board extends Application {
 
-
+    public Gamer hero;
     public static void main(String[] args) {
         launch( args );
     }
-
     public static GridPane tileMap;
     public static int mapLengthTiles = 13;
     public static int tilesizePx = 50;
+    int[][] labyrinth;
+    Rectangle tile;
+    Rectangle tile2;
 
-
-    public static int [][] labyrinth=new int[13][13];
 
     public static int count1 = 0;
     public static int count2 = 0;
@@ -43,17 +44,16 @@ public class Board extends Application {
     ImagePattern wall = new ImagePattern( rocks );
     Image path = new Image( "file:assets/road.jpg" );
     ImagePattern road = new ImagePattern( path );
-    Gamer hero=new Gamer();
+
 
     @Override
     public void start(Stage primaryStage) throws Exception {
         mapScene2();
         addTiles();
+        hero=new Gamer();
+        tileMap.add(hero.getPlayer(), hero.getTileY(),hero.getTileX());
 
-        System.out.print(hero.getPlayer());
-        System.out.print(hero.getTileX());
 
-        tileMap.add(hero.getPlayer(), hero.getTileX(),hero.getTileY());
     }
 
     public void mapScene2() {
@@ -73,24 +73,52 @@ public class Board extends Application {
                     case A:
                     case LEFT: {
 
+                                if(getNodeFromGridPane( tileMap, hero.getTileY()-1, hero.getTileX() ).getId().equals( "tee" )) {
+                                    System.out.print( getNodeFromGridPane( tileMap, hero.getTileY(), hero.getTileX() - 1 ).getId() );
+                                    System.out.println();
+                                    tileMap.getChildren().removeAll( hero.getPlayer() );
+                                    hero.move( 0, 50, 0, -1 );
 
-                        hero.move( 0, -1 );
-
-
-                        System.out.println( "Move left" );
+                                    tileMap.add( hero.getPlayer(), hero.getTileY(), hero.getTileX() );
+                                }
+                        System.out.print( "Move left" );
                         break;
                     }
                     case W:
                     case UP: {
-                        hero.move(0, -1);
+                        if(getNodeFromGridPane( tileMap, hero.getTileY(), hero.getTileX()-1 ).getId().equals( "tee" )) {
+                            System.out.print( getNodeFromGridPane( tileMap, hero.getTileY(), hero.getTileX() ) );
+                            System.out.println();
+                            tileMap.getChildren().removeAll( hero.getPlayer() );
+                            hero.move( -50, 0, -1, 0 );
+                            tileMap.add( hero.getPlayer(), hero.getTileY(), hero.getTileX() );
+                        }
+                        System.out.print( "Move Up" );
+                        break;
                     }
                     case D:
                     case RIGHT: {
-                        hero.move(1, 0);
+                        if(getNodeFromGridPane( tileMap, hero.getTileY()+1, hero.getTileX() ).getId().equals( "tee" )) {
+                            System.out.print( getNodeFromGridPane( tileMap, hero.getTileY(), hero.getTileX() ) );
+                            System.out.println();
+                            tileMap.getChildren().removeAll( hero.getPlayer() );
+                            hero.move( 0, 50, 0, 1 );
+                            tileMap.add( hero.getPlayer(), hero.getTileY(), hero.getTileX() );
+                        }
+                        System.out.print( "Move right" );
+                        break;
                     }
                     case S:
                     case DOWN: {
-                        hero.move(0, 1);
+                        if(getNodeFromGridPane( tileMap, hero.getTileY(), hero.getTileX()+1 ).getId().equals( "tee" )) {
+                            System.out.print( getNodeFromGridPane( tileMap, hero.getTileY(), hero.getTileX() ) );
+                            System.out.println();
+                            tileMap.getChildren().removeAll( hero.getPlayer() );
+                            hero.move( 50, 0, 1, 0 );
+                            tileMap.add( hero.getPlayer(), hero.getTileY(), hero.getTileX() );
+                        }
+                        System.out.print( "Move down" );
+                        break;
                     }
                     default:
                         break;
@@ -102,22 +130,23 @@ public class Board extends Application {
     }
 
 
-    public  void addTiles() {
+    public void  addTiles() {
 
-        int[][] labyrinth = new int[][]
+
+        labyrinth = new int[][]
                 {
                         {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
-                        {1, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 1},
-                        {1, 0, 1, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1},
-                        {1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1},
-                        {1, 0, 0, 0, 0, 0, 1, 0, 1, 1, 1, 0, 1},
-                        {1, 0, 1, 1, 1, 0, 1, 0, 0, 0, 0, 0, 1},
-                        {1, 0, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 1},
-                        {1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1},
-                        {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1},
-                        {1, 0, 1, 1, 1, 1, 0, 1, 0, 0, 0, 0, 1},
-                        {1, 0, 1, 0, 0, 0, 0, 1, 1, 1, 1, 0, 1},
-                        {1, 0, 1, 0, 1, 1, 0, 0, 0, 0, 1, 0, 1},
+                        {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
+                        {1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
+                        {1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
+                        {1, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 1},
+                        {1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1},
+                        {1, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 1},
+                        {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
+                        {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
+                        {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
+                        {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
+                        {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
                         {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1}
                 };
 
@@ -127,16 +156,16 @@ public class Board extends Application {
 
                 if (labyrinth[count1][count2] == value) {
 
-                    Rectangle tile = new Rectangle( tilesizePx, tilesizePx );
+                    tile = new Rectangle( tilesizePx, tilesizePx );
                     tile.setFill( wall );
-                    tileMap.add( tile, count1, count2 );
+                    tileMap.add( tile, count2, count1 );
                     tile.setId("sein");
 
 
-                } else if (labyrinth[count1][count2] != value && labyrinth[count1][count2]!=2) {
-                    Rectangle tile2 = new Rectangle( tilesizePx, tilesizePx );
+                } else if (labyrinth[count1][count2] != value) {
+                    tile2 = new Rectangle( tilesizePx, tilesizePx );
                     tile2.setFill( road );
-                    tileMap.add( tile2, count1, count2 );
+                    tileMap.add( tile2, count2, count1 );
                     tile2.setId( "tee" );
 
                 }
@@ -147,9 +176,14 @@ public class Board extends Application {
 
         }
 
-        //tileMap.add(hero.getPlayer(), hero.getTileX(), hero.getTileY());
-
-
+    }
+    public Node getNodeFromGridPane(GridPane gridPane, int col, int row) {
+        for (Node node : gridPane.getChildren()) {
+            if (GridPane.getColumnIndex(node) == col && GridPane.getRowIndex(node) == row) {
+                return node;
+            }
+        }
+        return null;
     }
 
 }

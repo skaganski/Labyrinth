@@ -96,44 +96,45 @@ public class Labyrinth extends Application {
                                         {1, 0, 1, 0, 1, 1, 0, 0, 0, 0, 1, 0, 1},
                                         {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1}
                                 };
-                            System.out.print(labyrinth);
+                        System.out.print(labyrinth);
                         //locationX=locationX-1;
+
                         System.out.println(tileMap.getRowIndex( player ));
                         System.out.println(tileMap.getColumnIndex( player ));
                         System.out.println(tileMap.getColumnIndex( block ));
                         System.out.println(tileMap.getRowIndex( block ));
 
                         if(tileMap.getRowIndex( player )==tileMap.getRowIndex(block) &&
-                               tileMap.getColumnIndex( player )-1==tileMap.getColumnIndex( block )){
+                                tileMap.getColumnIndex( player )-2==tileMap.getColumnIndex( block )){
                             System.out.print("HUI");
                             break;
                         }
 
-                       if (tileMap.getColumnIndex( player ) > 1) {
-                        locationX=locationX-1;
-                           tileMap.setColumnIndex( player, locationX );
-                                  System.out.println( "polozenije" + tileMap.getColumnIndex( player ) );
-                       }
+                        if (tileMap.getColumnIndex( player ) > 1) {
+                            locationX=locationX-1;
+                            tileMap.setColumnIndex( player, locationX );
+                            System.out.println( "polozenije" + tileMap.getColumnIndex( player ) );
+                        }
 
                         System.out.println( "Move left" );
-                       break;
+                        break;
                     }
                     case W:
                     case UP: {
                         locationY=locationY-1;
-                               if (tileMap.getRowIndex( player )>1 ) {
-                                   tileMap.setRowIndex( player, locationY );
+                        if (tileMap.getRowIndex( player )>1 ) {
+                            tileMap.setRowIndex( player, locationY );
                         }
                         System.out.println( "Move up" );
                         break;
                     }
                     case D:
                     case RIGHT: {
-                            locationX=locationX+1;
+                        locationX=locationX+1;
 
-                               if (tileMap.getColumnIndex( player )<11){
-                                   tileMap.setColumnIndex(player, locationX);
-                       }
+                        if (tileMap.getColumnIndex( player )<11){
+                            tileMap.setColumnIndex(player, locationX);
+                        }
                         System.out.println( "Move right" );
                         break;
                     }
@@ -142,13 +143,13 @@ public class Labyrinth extends Application {
 
                         locationY=locationY+1;
 
-                                if (tileMap.getRowIndex(player)<11) {
+                        if (tileMap.getRowIndex(player)<11) {
 
-                                    tileMap.setRowIndex(player, locationY);
-                                    System.out.println("DOWN");
-                                }
-                         System.out.println( "Move down" );
-                            break;
+                            tileMap.setRowIndex(player, locationY);
+                            System.out.println("DOWN");
+                        }
+                        System.out.println( "Move down" );
+                        break;
 
                     }
                     default:
@@ -224,41 +225,41 @@ public class Labyrinth extends Application {
 
     }
 
- //   public Node getPlayer(GridPane tileMap, int col, int row) {
-   //    for (Node player : tileMap.getChildren()){
-     //     if (GridPane.getColumnIndex( player )==value && GridPane.getRowIndex(player)==value){
+    //   public Node getPlayer(GridPane tileMap, int col, int row) {
+    //    for (Node player : tileMap.getChildren()){
+    //     if (GridPane.getColumnIndex( player )==value && GridPane.getRowIndex(player)==value){
 //
 //
-  //            System.out.print(locationY);
+    //            System.out.print(locationY);
     //            return player;
 
 
-      //     }
-       //}
+    //     }
+    //}
 
-      //return  null;
-   //}
-
-
+    //return  null;
+    //}
 
 
 
 
 
-   // static boolean canMoveLeft() {
-     //  for(int count1=0; count1<mapLengthTiles; count1++)
-       //{
-         // for(int count2=0; count2<mapLengthTiles-1; count2++)
-           //{
-            //if (labyrinth[count1][count2] == labyrinth[count1][count2+1] && labyrinth[count1][count2]!=0) {
-              //return true;
-              //}
-              //if (labyrinth[count1][count2+1]!=0 && labyrinth[count1][count2]==0) {
-                //   return true;
-               //}
-            //}
-       //}
-       //return false;
+
+
+    // static boolean canMoveLeft() {
+    //  for(int count1=0; count1<mapLengthTiles; count1++)
+    //{
+    // for(int count2=0; count2<mapLengthTiles-1; count2++)
+    //{
+    //if (labyrinth[count1][count2] == labyrinth[count1][count2+1] && labyrinth[count1][count2]!=0) {
+    //return true;
+    //}
+    //if (labyrinth[count1][count2+1]!=0 && labyrinth[count1][count2]==0) {
+    //   return true;
+    //}
+    //}
+    //}
+    //return false;
     //}
 }
 
