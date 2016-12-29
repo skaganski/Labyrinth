@@ -8,13 +8,13 @@ import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 
-import javafx.scene.Node;
+
 
 
 /**
  * Created by sergeikaganski on 20/10/2016.
  */
-public class Gamer extends Application {
+public class Gamer extends Application  {
 
     int x, y,tileX, tileY;
 
@@ -29,15 +29,15 @@ public class Gamer extends Application {
 
     public Gamer() {
 
-       // Image img = new Image ( "file:assets/hero.jpg" );
-       // ImagePattern hero=new ImagePattern( img );
+       Image img = new Image ( "file:assets/hero2.png" );
+       ImagePattern imagePattern=new ImagePattern( img );
 
         x=50;
         y=50;
         tileX=1;
         tileY=1;
 
-        gamer=new Rectangle( x, y, Color.BLACK );
+        gamer=new Rectangle( x, y, imagePattern );
 
     }
     public Rectangle getPlayer(){
