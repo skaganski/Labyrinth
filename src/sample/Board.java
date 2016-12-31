@@ -19,7 +19,6 @@ import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
-import javafx.util.Duration;
 import sample.models.Gamer;
 
 
@@ -272,7 +271,9 @@ public class Board extends Application {
             @Override
             public void handle(long now) {
 
-                onUpdate();
+            if(lastUpdate-now==Math.round(1))
+
+                    onUpdate();
 
 
 
