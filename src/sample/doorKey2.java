@@ -12,6 +12,7 @@ public class doorKey2 extends doorKey {
     int keyX, keyY, keyTileX, keyTileY;
     public Rectangle doorKey2;
 
+
     public doorKey2(){
         Image img = new Image ( "file:assets/doorkey.png" );
         ImagePattern imagePattern=new ImagePattern( img );
@@ -22,9 +23,10 @@ public class doorKey2 extends doorKey {
         keyY=50;
         keyTileX=8;
         keyTileY=8;
-        doorKey = new Rectangle( keyX, keyY, imagePattern );
-        doorKey.setId( "key" );
+        doorKey2 = new Rectangle( keyX, keyY, imagePattern );
+        doorKey2.setId( "key" );
     }
+
 
     @Override
     public Rectangle getDoorKey() {

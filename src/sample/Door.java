@@ -33,16 +33,9 @@ public class Door extends Application {
     }
 
     public Rectangle getDoor(){
-
         return path;
     }
 
-    public int getDoorX(){
-        return  doorX;
-    }
-    public int getDoorY(){
-        return doorY;
-    }
 
     public int getDoorTileX(){
         return  doorTileX;

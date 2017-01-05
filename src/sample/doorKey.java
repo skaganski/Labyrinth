@@ -23,17 +23,12 @@ public class doorKey extends Application {
 
         Image img = new Image ( "file:assets/doorkey.png" );
         ImagePattern imagePattern=new ImagePattern( img );
-
-
-
         keyX=50;
         keyY=50;
         keyTileX=5;
         keyTileY=5;
         doorKey = new Rectangle( keyX, keyY, imagePattern );
         doorKey.setId( "key" );
-
-
     }
 
     public Rectangle getDoorKey(){

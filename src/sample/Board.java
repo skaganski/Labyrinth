@@ -1,17 +1,11 @@
 package sample;
 
-
-import javafx.animation.AnimationTimer;
-import javafx.animation.KeyFrame;
-import javafx.animation.KeyValue;
-import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.*;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
@@ -21,7 +15,6 @@ import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import sample.models.Gamer;
 
-
 /*
  * Created by sergeikaganski on 08/10/2016.
  */
@@ -30,24 +23,22 @@ public class Board extends Application {
     public Gamer hero;
     public doorKey exitKey;
     public doorKey2 exitKey2;
-    public Minotaurus minotaurus;
+    public Stairs stairs;
     public static void main(String[] args) {
         launch( args );
     }
     public static GridPane tileMap;
     public static int mapLengthTiles = 13;
     public static int tilesizePx = 50;
-    int[][] labyrinth;
+    static int[][] labyrinth;
+    static int[][] labyrinth2;
     Rectangle tile;
     Rectangle tile2;
     Scene scene;
-    long lastUpdate;
-    public AnimationTimer animationTimer;
-    boolean minoBegginingMoment=false;
-    long minoBegginingTime;
     public static int count1 = 0;
     public static int count2 = 0;
     public static int value = 1;
+    boolean firstLevel=true;
 
 
     Image rocks = new Image( "file:assets/rocks.jpg" );
@@ -55,34 +46,61 @@ public class Board extends Application {
     Image path = new Image( "file:assets/road.jpg" );
     ImagePattern road = new ImagePattern( path );
 
-
     @Override
     public void start(Stage primaryStage) throws Exception {
-        mapScene2();
-        addTiles();
+        mapScene();
+        mazeMap();
+        addToMap();
         keyMoving();
-        moveMinotaurus();
+    }
+
+    public void mapScene() {
+
+            tileMap = new GridPane();
+            Stage stage = new Stage();
+            scene = new Scene( tileMap, mapLengthTiles * tilesizePx, mapLengthTiles * tilesizePx );
+            stage.setScene( scene );
+            stage.show();
+    }
+
+    public void closeStage(){
+        scene.getWindow().hide();
+    }
+
+    public void addToMap(){
+
+        stairs=new Stairs();
         hero=new Gamer();
         exitKey=new doorKey();
         door=new Door();
         exitKey2=new doorKey2();
-        minotaurus=new Minotaurus();
         tileMap.add(hero.getPlayer(), hero.getTileY(),hero.getTileX());
         tileMap.add(exitKey.getDoorKey(), exitKey.getKeyTileY(), exitKey.getKeyTileX());
+    }
+
+    public void addToMap2(){
+
+        addToMap();
         tileMap.add(exitKey2.getDoorKey(), exitKey2.getKeyTileY(), exitKey2.getKeyTileX());
-        tileMap.add(minotaurus.getEnemy(), minotaurus.getMinoTileY(), minotaurus.getMinoTileX());
-
     }
 
+    public boolean checklLevel(){
+        if(firstLevel){
+            return true;
 
-    public void mapScene2() {
+        }else{
 
-        tileMap = new GridPane();
-        Stage stage = new Stage();
-        scene = new Scene( tileMap, mapLengthTiles * tilesizePx, mapLengthTiles * tilesizePx );
-        stage.setScene(scene);
-        stage.show();
+        return false;
+    }}
+    public void chooseLevel(){
+    if(checklLevel()){
+        stairsAppear();
+        }else{
+        doorAppear();
+        System.out.print(firstLevel);
     }
+    }
+
 
     public void keyMoving(){
         scene.setOnKeyPressed( new EventHandler<KeyEvent>() {
@@ -97,7 +115,8 @@ public class Board extends Application {
                             hero.move( 0, 50, 0, -1 );
                             tileMap.add( hero.getPlayer(), hero.getTileY(), hero.getTileX() );
                             keyCollected();
-                            doorAppear();
+                            chooseLevel();
+                            nextLevel();
                             gameOver();
 
                         }
@@ -113,7 +132,8 @@ public class Board extends Application {
                             hero.move( -50, 0, -1, 0 );
                             tileMap.add( hero.getPlayer(), hero.getTileY(), hero.getTileX() );
                             keyCollected();
-                            doorAppear();
+                            chooseLevel();
+                            nextLevel();
                             gameOver();
                         }
                         System.out.print( "Move Up" );
@@ -127,7 +147,8 @@ public class Board extends Application {
                             hero.move( 0, 50, 0, 1 );
                             tileMap.add( hero.getPlayer(), hero.getTileY(), hero.getTileX() );
                             keyCollected();
-                            doorAppear();
+                            chooseLevel();
+                            nextLevel();
                             gameOver();
                         }
 
@@ -142,7 +163,8 @@ public class Board extends Application {
                             hero.move( 50, 0, 1, 0 );
                             tileMap.add( hero.getPlayer(), hero.getTileY(), hero.getTileX() );
                             keyCollected();
-                            doorAppear();
+                            chooseLevel();
+                            nextLevel();
                             gameOver();
                         }
                         System.out.print( "Move down" );
@@ -157,28 +179,23 @@ public class Board extends Application {
     }
 
 
-
-    public void  addTiles() {
-
-
-        labyrinth = new int[][]
-                {
-                        {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
-                        {1, 0, 0, 0, 0, 0, 0, 1, 1, 0, 1, 0, 1},
-                        {1, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 1},
-                        {1, 0, 1, 0, 0, 1, 0, 1, 1, 0, 0, 0, 1},
-                        {1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 1, 0, 1},
-                        {1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 1},
-                        {1, 0, 1, 0, 1, 1, 1, 0, 1, 0, 1, 0, 1},
-                        {1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
-                        {1, 0, 0, 1, 1, 0, 1, 1, 0, 0, 1, 0, 1},
-                        {1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0, 1},
-                        {1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1},
-                        {1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1},
-                        {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1}
-                };
-
-
+    public  void mazeMap(){
+            labyrinth = new int[][]
+                    {
+                            {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
+                            {1, 0, 0, 0, 0, 0, 0, 1, 1, 0, 1, 0, 1},
+                            {1, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 1},
+                            {1, 0, 1, 0, 0, 1, 0, 1, 1, 0, 0, 0, 1},
+                            {1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 1, 0, 1},
+                            {1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 1},
+                            {1, 0, 1, 0, 1, 1, 1, 0, 1, 0, 1, 0, 1},
+                            {1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
+                            {1, 0, 0, 1, 1, 0, 1, 1, 0, 0, 1, 0, 1},
+                            {1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0, 1},
+                            {1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1},
+                            {1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1},
+                            {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1}
+                    };
         for (count1 = 0; count1 < mapLengthTiles; count1++) {
             for (count2 = 0; count2 < mapLengthTiles; count2++) {
 
@@ -197,16 +214,51 @@ public class Board extends Application {
                     tile2.setId( "tee" );
 
                 }
-
-
             }
+        }
+
+    }
+    public void mazeMap2(){
+        labyrinth2=new int[][]
+                {
+                        {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
+                        {1, 0, 0, 1, 0, 0, 0, 1, 1, 0, 1, 0, 1},
+                        {1, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 1},
+                        {1, 0, 1, 0, 0, 1, 0, 1, 1, 0, 0, 0, 1},
+                        {1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 1, 0, 1},
+                        {1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 1},
+                        {1, 0, 1, 0, 1, 1, 1, 0, 1, 0, 1, 0, 1},
+                        {1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
+                        {1, 0, 1, 1, 1, 0, 1, 1, 0, 0, 1, 0, 1},
+                        {1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0, 1},
+                        {1, 1, 0, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1},
+                        {1, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1},
+                        {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1}
+                };
+        for (count1 = 0; count1 < mapLengthTiles; count1++) {
+            for (count2 = 0; count2 < mapLengthTiles; count2++) {
+
+                if (labyrinth2[count1][count2] == value) {
+
+                    tile = new Rectangle( tilesizePx, tilesizePx );
+                    tile.setFill( wall );
+                    tileMap.add( tile, count2, count1 );
+                    tile.setId("sein");
 
 
+                } else if (labyrinth2[count1][count2]!=value) {
+                    tile2 = new Rectangle( tilesizePx, tilesizePx );
+                    tile2.setFill( road );
+                    tileMap.add( tile2, count2, count1 );
+                    tile2.setId( "tee" );
+
+                }
+            }
         }
 
     }
 
-
+    //http://stackoverflow.com/questions/20825935/javafx-get-node-by-row-and-column
     public Node getNodeFromGridPane(GridPane gridPane, int col, int row) {
         for (Node node : gridPane.getChildren()) {
             if (GridPane.getColumnIndex(node) == col && GridPane.getRowIndex(node) == row) {
@@ -217,10 +269,10 @@ public class Board extends Application {
     }
 
     public void gameOver(){
+
         if(getNodeFromGridPane( tileMap, hero.getTileY(), hero.getTileX()) ==
         getNodeFromGridPane( tileMap, door.getDoorTileY(), door.getDoorTileX() ) &&
-                tileMap.getChildren().contains( door.getDoor() )) {
-
+                tileMap.getChildren().contains( door.getDoor() )){
 
             System.out.print( "Winner!" );
             StackPane stack = new StackPane();
@@ -235,69 +287,61 @@ public class Board extends Application {
             scene.setRoot( stack );
         }
     }
-
+    // key collecting, if collected, then remove from Grid
     public void keyCollected(){
 
             if(getNodeFromGridPane( tileMap, hero.getTileY(), hero.getTileX() ) ==
                     getNodeFromGridPane( tileMap, exitKey.getKeyTileY(), exitKey.getKeyTileX() ) ){
                 tileMap.getChildren().remove( exitKey.getDoorKey() );
+                tileMap.getChildren().remove( stairs.getStairsUp() );
                 System.out.print("collected");
             }else if(getNodeFromGridPane( tileMap, hero.getTileY(), hero.getTileX() )==
                     getNodeFromGridPane( tileMap, exitKey2.getKeyTileY(), exitKey2.getKeyTileX() )){
                 tileMap.getChildren().remove( exitKey2.getDoorKey() );
+                tileMap.getChildren().remove( stairs.getStairsUp() );
             }
-
-
     }
 
     public  void doorAppear(){
 
-        if(tileMap.getChildren().contains( exitKey.getDoorKey() ) || tileMap.getChildren().contains( exitKey2.getDoorKey() ) ){
+        //if contains, then do nothing
+        if(tileMap.getChildren().contains( exitKey.getDoorKey()) ||tileMap.getChildren().contains( exitKey2.getDoorKey() )){
 
-        } else if(tileMap.getChildren().contains( door.getDoor() )) {
+        } else if(tileMap.getChildren().contains(door.getDoor() ) ) {
+
         }
         else{
-            tileMap.add(door.getDoor(), door.getDoorTileY(), door.getDoorTileX());
 
+            tileMap.add(door.getDoor(), door.getDoorTileY(), door.getDoorTileX());
         }
     }
 
-    public void moveMinotaurus(){
+    public void stairsAppear(){
+        if(tileMap.getChildren().contains( exitKey2.getDoorKey()) || tileMap.getChildren().contains( exitKey.getDoorKey() ) ){
+            // to eliminate duplicates
+        } else if(tileMap.getChildren().contains( stairs.getStairsUp())) {
 
-
-
-        animationTimer= new AnimationTimer() {
-
-            @Override
-            public void handle(long now) {
-
-            if(lastUpdate-now==Math.round(1))
-
-                    onUpdate();
-
-
-
-            }
-
-
-        };animationTimer.start();
-
+        }
+        else{
+            tileMap.add(stairs.getStairsUp(), stairs.getStairsTileY(), stairs.getStairsTileX());
+        }
     }
 
-    public void onUpdate() {
+    public void nextLevel(){
 
-                if (getNodeFromGridPane( tileMap, minotaurus.getMinoTileY(), minotaurus.getMinoTileX() + 1 ).getId().equals( "tee" )) {
-                    tileMap.getChildren().removeAll( minotaurus.getEnemy() );
-                    minotaurus.move( 50, 0, 1, 0 );
-                    tileMap.add( minotaurus.getEnemy(), minotaurus.getMinoTileY(), minotaurus.getMinoTileX() );
-
-                    System.out.print( "hei" );
-
-            } else if(getNodeFromGridPane( tileMap, minotaurus.getMinoTileY(), minotaurus.getMinoTileX()).getId().equals( "sein" ) ){
-                    animationTimer.stop();
-                }
-
+        if(getNodeFromGridPane( tileMap, hero.getTileY(), hero.getTileX()) ==
+                getNodeFromGridPane( tileMap, stairs.getStairsTileY(), stairs.getStairsTileX() ) &&
+                tileMap.getChildren().contains( stairs.getStairsUp() ) )
+        {
+            firstLevel=false;
+            closeStage();
+            mapScene();
+            mazeMap2();
+            addToMap2();
+            keyMoving();
+        }
     }
+
 }
 
 

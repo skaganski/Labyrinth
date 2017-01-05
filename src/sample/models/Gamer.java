@@ -46,12 +46,6 @@ public class Gamer extends Application  {
         return gamer;
 
     }
-    public int getX(){
-      return  x;
-    }
-    public int getY(){
-        return y;
-    }
 
     public int getTileX(){
         return  tileX;
