@@ -19,6 +19,7 @@ import sample.models.Gamer;
  * Created by sergeikaganski on 08/10/2016.
  */
 public class Board extends Application {
+    //delaration
     public Door door;
     public Gamer hero;
     public doorKey exitKey;
@@ -45,6 +46,11 @@ public class Board extends Application {
     ImagePattern wall = new ImagePattern( rocks );
     Image path = new Image( "file:assets/road.jpg" );
     ImagePattern road = new ImagePattern( path );
+    Image path2=new Image( "file:assets/level2road.jpg");
+    ImagePattern road2=new ImagePattern( path2 );
+    Image rocks2=new Image("file:assets/level2wall.png");
+    ImagePattern wall2=new ImagePattern( rocks2 );
+
 
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -53,16 +59,16 @@ public class Board extends Application {
         addToMap();
         keyMoving();
     }
-
+    //creating the main stage
     public void mapScene() {
 
-            tileMap = new GridPane();
-            Stage stage = new Stage();
-            scene = new Scene( tileMap, mapLengthTiles * tilesizePx, mapLengthTiles * tilesizePx );
-            stage.setScene( scene );
-            stage.show();
+        tileMap = new GridPane();
+        Stage stage = new Stage();
+        scene = new Scene( tileMap, mapLengthTiles * tilesizePx, mapLengthTiles * tilesizePx );
+        stage.setScene( scene );
+        stage.show();
     }
-
+    //method for closing scene
     public void closeStage(){
         scene.getWindow().hide();
     }
@@ -77,30 +83,30 @@ public class Board extends Application {
         tileMap.add(hero.getPlayer(), hero.getTileY(),hero.getTileX());
         tileMap.add(exitKey.getDoorKey(), exitKey.getKeyTileY(), exitKey.getKeyTileX());
     }
-
+    //adding to the second gridpane
     public void addToMap2(){
 
         addToMap();
         tileMap.add(exitKey2.getDoorKey(), exitKey2.getKeyTileY(), exitKey2.getKeyTileX());
     }
-
+    // if firstlevel trur else false, checking the level
     public boolean checklLevel(){
         if(firstLevel){
             return true;
 
         }else{
 
-        return false;
-    }}
+            return false;
+        }}
+    //choose level, if first level then use stairs method else door method
     public void chooseLevel(){
-    if(checklLevel()){
-        stairsAppear();
+        if(checklLevel()){
+            stairsAppear();
         }else{
-        doorAppear();
-        System.out.print(firstLevel);
+            doorAppear();
+            System.out.print(firstLevel);
+        }
     }
-    }
-
 
     public void keyMoving(){
         scene.setOnKeyPressed( new EventHandler<KeyEvent>() {
@@ -109,7 +115,7 @@ public class Board extends Application {
                 switch (event.getCode()) {
                     case A:
                     case LEFT: {
-
+                        // if the next tile has ID "tee" then erase hero and draw it again on the new place
                         if(getNodeFromGridPane( tileMap, hero.getTileY()-1, hero.getTileX() ).getId().equals( "tee" )) {
                             tileMap.getChildren().removeAll( hero.getPlayer() );
                             hero.move( 0, 50, 0, -1 );
@@ -118,9 +124,7 @@ public class Board extends Application {
                             chooseLevel();
                             nextLevel();
                             gameOver();
-
                         }
-
                         System.out.print( "Move left" );
                         System.out.println();
                         break;
@@ -151,7 +155,6 @@ public class Board extends Application {
                             nextLevel();
                             gameOver();
                         }
-
                         System.out.print( "Move right" );
                         System.out.println();
                         break;
@@ -177,47 +180,41 @@ public class Board extends Application {
             }
         } );
     }
-
-
+    // creating maze, if 1 then wall and cannot walk, else 0 path
     public  void mazeMap(){
-            labyrinth = new int[][]
-                    {
-                            {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
-                            {1, 0, 0, 0, 0, 0, 0, 1, 1, 0, 1, 0, 1},
-                            {1, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 1},
-                            {1, 0, 1, 0, 0, 1, 0, 1, 1, 0, 0, 0, 1},
-                            {1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 1, 0, 1},
-                            {1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 1},
-                            {1, 0, 1, 0, 1, 1, 1, 0, 1, 0, 1, 0, 1},
-                            {1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
-                            {1, 0, 0, 1, 1, 0, 1, 1, 0, 0, 1, 0, 1},
-                            {1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0, 1},
-                            {1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1},
-                            {1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1},
-                            {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1}
-                    };
+        labyrinth = new int[][]
+                {
+                        {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
+                        {1, 0, 0, 0, 0, 0, 0, 1, 1, 0, 1, 0, 1},
+                        {1, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 1},
+                        {1, 0, 1, 0, 0, 1, 0, 1, 1, 0, 0, 0, 1},
+                        {1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 1, 0, 1},
+                        {1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 1},
+                        {1, 0, 1, 0, 1, 1, 1, 0, 1, 0, 1, 0, 1},
+                        {1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
+                        {1, 0, 0, 1, 1, 0, 1, 1, 0, 0, 1, 0, 1},
+                        {1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0, 1},
+                        {1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1},
+                        {1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1},
+                        {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1}
+                };
         for (count1 = 0; count1 < mapLengthTiles; count1++) {
             for (count2 = 0; count2 < mapLengthTiles; count2++) {
-
                 if (labyrinth[count1][count2] == value) {
-
                     tile = new Rectangle( tilesizePx, tilesizePx );
                     tile.setFill( wall );
                     tileMap.add( tile, count2, count1 );
                     tile.setId("sein");
-
-
                 } else if (labyrinth[count1][count2]!=value) {
                     tile2 = new Rectangle( tilesizePx, tilesizePx );
                     tile2.setFill( road );
                     tileMap.add( tile2, count2, count1 );
                     tile2.setId( "tee" );
-
                 }
             }
         }
-
     }
+    // creating maze, if 1 then wall and cannot walk, else 0 path
     public void mazeMap2(){
         labyrinth2=new int[][]
                 {
@@ -237,25 +234,19 @@ public class Board extends Application {
                 };
         for (count1 = 0; count1 < mapLengthTiles; count1++) {
             for (count2 = 0; count2 < mapLengthTiles; count2++) {
-
                 if (labyrinth2[count1][count2] == value) {
-
                     tile = new Rectangle( tilesizePx, tilesizePx );
-                    tile.setFill( wall );
+                    tile.setFill( wall2 );
                     tileMap.add( tile, count2, count1 );
                     tile.setId("sein");
-
-
                 } else if (labyrinth2[count1][count2]!=value) {
                     tile2 = new Rectangle( tilesizePx, tilesizePx );
-                    tile2.setFill( road );
+                    tile2.setFill( road2 );
                     tileMap.add( tile2, count2, count1 );
                     tile2.setId( "tee" );
-
                 }
             }
         }
-
     }
 
     //http://stackoverflow.com/questions/20825935/javafx-get-node-by-row-and-column
@@ -269,9 +260,9 @@ public class Board extends Application {
     }
 
     public void gameOver(){
-
+        //if there is door located in gridpane, then new scene and end the game
         if(getNodeFromGridPane( tileMap, hero.getTileY(), hero.getTileX()) ==
-        getNodeFromGridPane( tileMap, door.getDoorTileY(), door.getDoorTileX() ) &&
+                getNodeFromGridPane( tileMap, door.getDoorTileY(), door.getDoorTileX() ) &&
                 tileMap.getChildren().contains( door.getDoor() )){
 
             System.out.print( "Winner!" );
@@ -290,23 +281,23 @@ public class Board extends Application {
     // key collecting, if collected, then remove from Grid
     public void keyCollected(){
 
-            if(getNodeFromGridPane( tileMap, hero.getTileY(), hero.getTileX() ) ==
-                    getNodeFromGridPane( tileMap, exitKey.getKeyTileY(), exitKey.getKeyTileX() ) ){
-                tileMap.getChildren().remove( exitKey.getDoorKey() );
-                tileMap.getChildren().remove( stairs.getStairsUp() );
-                System.out.print("collected");
-            }else if(getNodeFromGridPane( tileMap, hero.getTileY(), hero.getTileX() )==
-                    getNodeFromGridPane( tileMap, exitKey2.getKeyTileY(), exitKey2.getKeyTileX() )){
-                tileMap.getChildren().remove( exitKey2.getDoorKey() );
-                tileMap.getChildren().remove( stairs.getStairsUp() );
-            }
+        if(getNodeFromGridPane( tileMap, hero.getTileY(), hero.getTileX() ) ==
+                getNodeFromGridPane( tileMap, exitKey.getKeyTileY(), exitKey.getKeyTileX() ) ){
+            tileMap.getChildren().remove( exitKey.getDoorKey() );
+            tileMap.getChildren().remove( stairs.getStairsUp() );
+            System.out.print("collected");
+        }else if(getNodeFromGridPane( tileMap, hero.getTileY(), hero.getTileX() )==
+                getNodeFromGridPane( tileMap, exitKey2.getKeyTileY(), exitKey2.getKeyTileX() )){
+            tileMap.getChildren().remove( exitKey2.getDoorKey() );
+            tileMap.getChildren().remove( stairs.getStairsUp() );
+        }
     }
 
     public  void doorAppear(){
 
-        //if contains, then do nothing
+        //if contains, then do nothing, else add Door
         if(tileMap.getChildren().contains( exitKey.getDoorKey()) ||tileMap.getChildren().contains( exitKey2.getDoorKey() )){
-
+            //to eliminate duplicates
         } else if(tileMap.getChildren().contains(door.getDoor() ) ) {
 
         }
@@ -328,7 +319,7 @@ public class Board extends Application {
     }
 
     public void nextLevel(){
-
+        //if there is a path to next level, then close first scene and create new with new map
         if(getNodeFromGridPane( tileMap, hero.getTileY(), hero.getTileX()) ==
                 getNodeFromGridPane( tileMap, stairs.getStairsTileY(), stairs.getStairsTileX() ) &&
                 tileMap.getChildren().contains( stairs.getStairsUp() ) )

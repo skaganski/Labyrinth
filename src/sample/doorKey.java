@@ -16,7 +16,6 @@ public class doorKey extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
 
-
     }
 
     public doorKey() {

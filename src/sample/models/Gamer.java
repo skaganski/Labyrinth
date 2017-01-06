@@ -23,14 +23,11 @@ public class Gamer extends Application  {
     @Override
     public void start(Stage primaryStage) throws Exception {
 
-
     }
-
-
     public Gamer() {
 
-       Image img = new Image ( "file:assets/hero2.png" );
-       ImagePattern imagePattern=new ImagePattern( img );
+        Image img = new Image ( "file:assets/hero2.png" );
+        ImagePattern imagePattern=new ImagePattern( img );
 
         x=50;
         y=50;
@@ -42,9 +39,7 @@ public class Gamer extends Application  {
     }
     public Rectangle getPlayer(){
 
-
         return gamer;
-
     }
 
     public int getTileX(){
@@ -53,15 +48,13 @@ public class Gamer extends Application  {
     public int getTileY(){
         return tileY;
     }
-
+    // move method, chaning x, y, tileY and tileX
     public void move(int dx, int dy, int tx, int ty){
 
         x+=dx;
         y+=dy;
         tileX+=tx;
         tileY+=ty;
-
-
     }
 }
 

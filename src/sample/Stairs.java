@@ -1,6 +1,7 @@
 package sample;
 
-import javafx.scene.paint.Color;
+import javafx.scene.image.Image;
+import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 
@@ -16,8 +17,9 @@ public class Stairs extends doorKey{
         stairsY=50;
         stairsTileX=11;
         stairsTileY=5;
-
-        stairsUp=new Rectangle( stairsX, stairsY,Color.RED );
+        Image img = new Image ( "file:assets/portal.jpg" );
+        ImagePattern imagePattern=new ImagePattern( img );
+        stairsUp=new Rectangle( stairsX, stairsY,imagePattern );
     }
 
     public Rectangle getStairsUp(){
